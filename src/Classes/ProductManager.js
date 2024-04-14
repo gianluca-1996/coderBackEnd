@@ -5,7 +5,7 @@ class ProductManager {
   #path;
 
   constructor(path) {
-    this.#createFile(path);
+    //this.#createFile(path);
     this.#path = path;
   }
 
@@ -38,7 +38,7 @@ class ProductManager {
         new Producto(id, title, description, price, thumbnail, code, stock)
       );
 
-      await fs.promises.writeFile(this.#path, JSON.stringify(productos));
+      await fs.promises.writeFile(this.#path, JSON.stringify(productos, null, 3));
       console.info(`Producto \"${title}\" creado con exito`);
     } catch (error) {
       console.log(
@@ -48,16 +48,8 @@ class ProductManager {
   }
 
   async getProducts() {
-    let productos = [];
-    try {
-      if (fs.existsSync(this.#path))
-        productos = await fs.promises.readFile(this.#path);
-    } catch (error) {
-      console.log(
-        "No se pudo leer el archivo en getProductos() Error: ",
-        error.message
-      );
-    }
+    let productos;
+    if (fs.existsSync(this.#path)) productos = await fs.promises.readFile(this.#path);
     return JSON.parse(productos);
   }
 
@@ -117,7 +109,7 @@ class ProductManager {
     }
 
     try {
-      await fs.promises.writeFile(this.#path, JSON.stringify(productos));
+      await fs.promises.writeFile(this.#path, JSON.stringify(productos, null, 3));
     } catch (error) {
       console.log("ERROR: No se pudo actualizar el producto. ", error.message);
     }
@@ -137,7 +129,7 @@ class ProductManager {
     productos = productos.filter(prod => prod.id != id);
 
     try {
-      await fs.promises.writeFile(this.#path, JSON.stringify(productos));
+      await fs.promises.writeFile(this.#path, JSON.stringify(productos, null, 3));
       console.log("Producto eliminado con exito");
     } catch (error) {
       console.log("ERROR: No se pudo eliminar el producto. ", error.message);
