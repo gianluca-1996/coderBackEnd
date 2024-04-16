@@ -1,4 +1,3 @@
-const Producto = require("./Producto.js");
 const fs = require("fs");
 
 class ProductManager {
@@ -35,7 +34,7 @@ class ProductManager {
 
       id = productos.length === 0 ? 1 : productos[productos.length - 1].id + 1;
       productos.push(
-        new Producto(id, title, description, price, thumbnail, code, stock)
+        {id, title, description, price, thumbnail, code, stock}
       );
 
       await fs.promises.writeFile(this.#path, JSON.stringify(productos, null, 3));
