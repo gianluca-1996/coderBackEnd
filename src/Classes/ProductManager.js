@@ -1,3 +1,4 @@
+const { error } = require("console");
 const fs = require("fs");
 
 class ProductManager {
@@ -20,21 +21,20 @@ class ProductManager {
   async addProduct(code, title, description, price, thumbnail, stock) {
     let id;
 
-    if (!code) return console.log("Debe incluir el campo code");
-    if (!title) return console.log("Debe incluir el campo title");
-    if (!description) return console.log("Debe incluir el campo description");
-    if (isNaN(price)) return console.log("Debe incluir el campo price");
-    if (price < 1) return console.log("El precio debe se mayor a 1");
-    if (!thumbnail) return console.log("Debe incluir el campo thumbnail");
-    if (isNaN(stock)) return console.log("Debe incluir el campo stock");
-    if (stock < 1) return console.log("El stock debe se mayor a 1");
+    if (!code) throw Error("Debe incluir el campo code");
+    if (!title) throw Error("Debe incluir el campo title");
+    if (!description) throw Error("Debe incluir el campo description");
+    if (isNaN(price)) throw Error("Debe incluir el campo price");
+    if (price < 1) throw Error("El precio debe se mayor a 1");
+    if (isNaN(stock)) throw Error("Debe incluir el campo stock");
+    if (stock < 1) throw Error("El stock debe se mayor a 1");
 
     try {
       const productos = await this.getProducts();
 
       id = productos.length === 0 ? 1 : productos[productos.length - 1].id + 1;
       productos.push(
-        {id, title, description, price, thumbnail, code, stock}
+        {id, title, description, price, thumbnail, code, stock, status: true}
       );
 
       await fs.promises.writeFile(this.#path, JSON.stringify(productos, null, 3));
@@ -65,8 +65,7 @@ class ProductManager {
     );
 
     if (itemPosition === -1) {
-      console.log("No se encontro el producto para actualizar");
-      return;
+      throw new Error("No se encontro el producto para actualizar");
     }
 
     let objetoNuevo;
@@ -121,8 +120,7 @@ class ProductManager {
     );
 
     if (itemPosition === -1) {
-      console.log("No se encontro el producto a eliminar");
-      return;
+      throw new Error("No se encontro el producto a eliminar");
     }
 
     productos = productos.filter(prod => prod.id != id);

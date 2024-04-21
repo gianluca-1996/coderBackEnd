@@ -3,10 +3,10 @@
       "id": 1,
       "title": "Pizza napoletana",
       "description": "Masa madre, salsa de tomate natural, rodajas de tomate, ajo, oregano, aceitunas",
-      "price": 8000,
+      "price": 9000,
       "thumbnail": "urlImage",
-      "code": "P.nap",
-      "stock": 10
+      "code": "P.napo",
+      "stock": 9
    },
    {
       "id": 2,
@@ -52,5 +52,34 @@
       "thumbnail": "urlImage",
       "code": "P.4q",
       "stock": 10
+   },
+   {
+      "id": 7,
+      "title": "Empanada carne",
+      "description": "masa casera, carne, condimento",
+      "price": 900,
+      "thumbnail": [],
+      "code": "p345j",
+      "stock": 10,
+      "status": true
+   },
+   {
+      "id": 8,
+      "title": "Empanada jyq",
+      "description": "masa casera, jamon, muzza",
+      "price": 900,
+      "thumbnail": [],
+      "code": "jyq",
+      "stock": 15,
+      "status": true
+   },
+   {
+      "id": 9,
+      "title": "Empanada pollo",
+      "description": "masa casera, pollo, condimento",
+      "price": 900,
+      "code": "emp123p",
+      "stock": 12,
+      "status": true
    }
 ]

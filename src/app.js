@@ -1,12 +1,21 @@
-const ProductManager = require("./Classes/ProductManager");
 const express = require('express');
 const app = express();
 const PORT = 8080;
+const productsRouter = require("./Routes/products.router.js");
+
 app.use(express.urlencoded({extended: true}));
-const productMngr = new ProductManager("./productos.json");
+app.use(express.json());
+
+app.use('/api/products', productsRouter);
+
+app.listen(PORT, () => {
+    console.log(`Servidor escuchando en el puerto: ${PORT}`);
+})
+
+//const productMngr = new ProductManager("./productos.json");
 
 //DESAFIO NUMERO 3 (SERVIDORES WEB)
-app.get('/products', (req, res) => {
+/*app.get('/products', (req, res) => {
     const limit = parseInt(req.query.limit);
     if(!isNaN(limit)){
         obtenerProductos(limit)
@@ -56,4 +65,4 @@ const obtenerProductoId = async pid => {
     } catch (error) {
         console.log(error);
     }
-}
+}*/
