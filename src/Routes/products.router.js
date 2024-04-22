@@ -19,7 +19,7 @@ router.get('/:pid', (req, res) => {
     if(!isNaN(pid)){
         obtenerProductoId(pid)
         .then(producto => res.json(producto))
-        .catch(error => console.log(error))
+        .catch(error => res.send(error.message))
     }
     else res.send("ERROR: pid is not a number")
 })
@@ -48,7 +48,6 @@ router.delete('/:pid', (req, res) => {
 
 
 const obtenerProductos = async limit => {
-    try {
         let productos = await productMngr.getProducts();
         const productosFiltrados = new Array();
 
@@ -60,18 +59,11 @@ const obtenerProductos = async limit => {
         }
         
         return productos;
-    } catch (error) {
-        console.log("ERROR: " + error);
-    }
 }
 
 const obtenerProductoId = async pid => {
-    try {
-        const producto = await productMngr.getProductById(pid);
-        return producto;
-    } catch (error) {
-        console.log(error);
-    }
+    const producto = await productMngr.getProductById(pid);
+    return producto;
 }
 
 const agregar = async (code, title, description, price, thumbnail, stock, category) => {

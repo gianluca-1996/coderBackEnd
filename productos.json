@@ -81,5 +81,14 @@
       "code": "emp123p",
       "stock": 12,
       "status": true
+   },
+   {
+      "id": 10,
+      "title": "Empanada cebolla y queso",
+      "description": "masa casera, cebolla, muzza",
+      "price": 900,
+      "code": "emp1543",
+      "stock": 9,
+      "status": true
    }
 ]

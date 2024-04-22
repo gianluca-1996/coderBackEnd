@@ -1,7 +1,9 @@
-const Router = require("express")
+const Router = require('express')
 const router = Router();
-const CartManager = require("../Classes/cartManager.js");
-const cartMngr = new CartManager("./carritos.json");
+const CartManager = require('../Classes/cartManager.js');
+const ProductManager = require('../Classes/productManager.js');
+const cartMngr = new CartManager('./carritos.json');
+const productMngr = new ProductManager('./productos.json');
 
 router.post('/', (req, res) => {
     agregar()
@@ -41,7 +43,10 @@ const obtenerByCid = async (cid) => {
 
 const agregarProducto = async (cid, pid) => {
     if(isNaN(cid) || isNaN(pid)) throw new Error("Id de carrito invalido");
-    else await cartMngr.addProduct(cid, pid);
+    else {
+        const producto = await productMngr.getProductById(pid);
+        if(producto) await cartMngr.addProduct(cid, pid);
+    }
 }
 
 module.exports = router;

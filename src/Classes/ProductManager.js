@@ -27,34 +27,31 @@ class ProductManager {
     if (price < 1) throw Error("El precio debe se mayor a 1");
     if (isNaN(stock)) throw Error("Debe incluir el campo stock");
     if (stock < 1) throw Error("El stock debe se mayor a 1");
+    
+    const productos = await this.getProducts();
 
-    try {
-      const productos = await this.getProducts();
+    id = productos.length === 0 ? 1 : productos[productos.length - 1].id + 1;
+    productos.push(
+      {id, title, description, price, thumbnail, code, stock, status: true}
+    );
 
-      id = productos.length === 0 ? 1 : productos[productos.length - 1].id + 1;
-      productos.push(
-        {id, title, description, price, thumbnail, code, stock, status: true}
-      );
-
-      await fs.promises.writeFile(this.#path, JSON.stringify(productos, null, 3));
-      console.info(`Producto \"${title}\" creado con exito`);
-    } catch (error) {
-      console.log(
-        `No se pudo insertar el producto: ${title}. \nError: ${error.message}`
-      );
-    }
+    await fs.promises.writeFile(this.#path, JSON.stringify(productos, null, 3));
   }
 
   async getProducts() {
     let productos;
-    if (fs.existsSync(this.#path)) productos = await fs.promises.readFile(this.#path);
-    return JSON.parse(productos);
+    if (fs.existsSync(this.#path)){
+      productos = await fs.promises.readFile(this.#path);
+      return JSON.parse(productos);
+    }
+    else throw new Error("Archivo no encontrado");
   }
 
   async getProductById(id) {
     const productos = await this.getProducts();
     const item = await productos.find((product) => product.id == id);
-    return item ? item : "Producto no encontrado";
+    if(item) return item
+    else throw new Error("Producto no encontrado");
   }
 
   async updateProduct(id, obj, campo, valor) {
@@ -104,12 +101,7 @@ class ProductManager {
         productos[itemPosition] = { id: productos[itemPosition].id, ...obj };
         break;
     }
-
-    try {
-      await fs.promises.writeFile(this.#path, JSON.stringify(productos, null, 3));
-    } catch (error) {
-      console.log("ERROR: No se pudo actualizar el producto. ", error.message);
-    }
+    await fs.promises.writeFile(this.#path, JSON.stringify(productos, null, 3));
   }
 
   async deleteProduct(id) {
@@ -123,13 +115,7 @@ class ProductManager {
     }
 
     productos = productos.filter(prod => prod.id != id);
-
-    try {
-      await fs.promises.writeFile(this.#path, JSON.stringify(productos, null, 3));
-      console.log("Producto eliminado con exito");
-    } catch (error) {
-      console.log("ERROR: No se pudo eliminar el producto. ", error.message);
-    }
+    await fs.promises.writeFile(this.#path, JSON.stringify(productos, null, 3));
   }
 }
 
