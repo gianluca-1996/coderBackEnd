@@ -2,11 +2,13 @@ const express = require('express');
 const app = express();
 const PORT = 8080;
 const productsRouter = require("./Routes/products.router.js");
+const cartsRouter = require("./Routes/carts.router.js");
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
 app.use('/api/products', productsRouter);
+app.use('/api/carts', cartsRouter);
 
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto: ${PORT}`);
