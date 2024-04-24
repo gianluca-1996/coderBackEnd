@@ -44,7 +44,7 @@ class ProductManager {
       productos = await fs.promises.readFile(this.#path);
       return JSON.parse(productos);
     }
-    else throw new Error("Archivo no encontrado");
+    else return [];
   }
 
   async getProductById(id) {

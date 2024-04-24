@@ -6,7 +6,7 @@ const cartsRouter = require("./Routes/carts.router.js");
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
-
+app.use(express.static('public'));
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 

@@ -1,3 +1,4 @@
+const uploader = require("../utils.js");
 const Router = require("express")
 const router = Router();
 const ProductManager = require("../Classes/productManager.js");
@@ -24,8 +25,8 @@ router.get('/:pid', (req, res) => {
     else res.send("ERROR: pid is not a number")
 })
 
-router.post('/', (req, res) => {
-    agregar(req.body.code, req.body.title, req.body.description, req.body.price, req.body.thumbnail, req.body.stock, req.body.category)
+router.post('/', uploader.single('file'), (req, res) => {
+    agregar(req.body.code, req.body.title, req.body.description, req.body.price, (req.file ? [req.file.path] : []), req.body.stock, req.body.category)
     .then(() => {
         res.send("Producto agregado con exito...");
     })

@@ -20,8 +20,11 @@ class CartManager{
 
     async getCarts(){
         let carritos;
-        if (fs.existsSync(this.#path)) carritos = await fs.promises.readFile(this.#path);
-        return JSON.parse(carritos);
+        if (fs.existsSync(this.#path)){
+            carritos = await fs.promises.readFile(this.#path);
+            return JSON.parse(carritos);
+        }
+        else return [];
     }
 
     async getCartByCid(cid){
