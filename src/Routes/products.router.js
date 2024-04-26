@@ -1,5 +1,5 @@
 const uploader = require("../utils.js");
-const Router = require("express")
+const Router = require("express");
 const router = Router();
 const ProductManager = require("../Classes/productManager.js");
 const productMngr = new ProductManager("./productos.json");
