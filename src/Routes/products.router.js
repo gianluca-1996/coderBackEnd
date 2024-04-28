@@ -3,16 +3,21 @@ const Router = require("express");
 const router = Router();
 const ProductManager = require("../Classes/productManager.js");
 const productMngr = new ProductManager("./productos.json");
+const handlebars = require("express-handlebars");
+router.engine("handlebars", handlebars.engine());
+router.set("views", __dirname + "/../views");
+router.set("view engine", "handlebars");
 
 
 router.get('/', (req, res) => {
-    const limit = parseInt(req.query.limit);
+    const limit = req.query.limit;
     if(!isNaN(limit)){
         obtenerProductos(limit)
-        .then(productos => res.json(productos))
+        .then(productos => res.render('home', {productos, length: (productos.length > 0) ? true : false}))
         .catch(() => res.send("Error al obtener los productos"))
     }
-    else res.status(400).send("Error: limit is not a number")
+    else
+        res.send("El valor de limit es incorrecto");
 })
 
 router.get('/:pid', (req, res) => {
