@@ -5,6 +5,10 @@
          {
             "pid": 2,
             "quantity": 1
+         },
+         {
+            "pid": 8,
+            "quantity": 3
          }
       ]
    }

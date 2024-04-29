@@ -49,6 +49,7 @@ class ProductManager {
 
   async getProductById(id) {
     const productos = await this.getProducts();
+    if(isNaN(id)) throw new Error("El pid indicado es incorrecto");
     const item = await productos.find((product) => product.id == id);
     if(item) return item
     else throw new Error("Producto no encontrado");
@@ -57,7 +58,7 @@ class ProductManager {
   async updateProduct(id, obj, campo, valor) {
     const productos = await this.getProducts();
     const itemPosition = await productos.findIndex(
-      (product) => product.id == id
+      (product) => product.id === id
     );
 
     if (itemPosition === -1) {
@@ -98,7 +99,7 @@ class ProductManager {
         break;
 
       case undefined:
-        productos[itemPosition] = { id: productos[itemPosition].id, ...obj };
+        productos[itemPosition] = { ...productos[itemPosition], ...obj };
         break;
     }
     await fs.promises.writeFile(this.#path, JSON.stringify(productos, null, 3));

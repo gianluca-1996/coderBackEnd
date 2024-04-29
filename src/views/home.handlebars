@@ -7,7 +7,10 @@
                     <li>
                         <strong class="info">Title:</strong> {{this.title}}, <strong class="info">Description:</strong>
                         {{this.description}}, <strong class="info">Price:</strong> ${{this.price}}, 
-                        <strong class="info">Stock: {{this.stock}}</strong>
+                        <strong class="info">Stock: </strong>{{this.stock}}, <strong class="info">Thumbnail: </strong>
+                        {{#each this.thumbnail}}
+                            <img src="/img/{{this}}" alt="img" style="height: 70px;">
+                        {{/each}}
                     </li>
                     </br>
                 {{/each}}

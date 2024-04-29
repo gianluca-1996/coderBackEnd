@@ -8,80 +8,65 @@ router.engine("handlebars", handlebars.engine());
 router.set("views", __dirname + "/../views");
 router.set("view engine", "handlebars");
 
-
-router.get('/', (req, res) => {
-    const limit = req.query.limit;
-    if(!isNaN(limit)){
-        obtenerProductos(limit)
-        .then(productos => res.render('home', {productos, length: (productos.length > 0) ? true : false}))
-        .catch(() => res.send("Error al obtener los productos"))
+router.get('/realTimeProducts', async (req, res) => {
+    try {
+        const productos = await productMngr.getProducts();
+        res.render('home', {productos, length : productos.length > 0 ? true : false});
+    } catch (error) {
+        res.status(500).json({ error: 'Error al obtener los productos' });   
     }
-    else
-        res.send("El valor de limit es incorrecto");
 })
 
-router.get('/:pid', (req, res) => {
-    const pid = parseInt(req.params.pid);
-    if(!isNaN(pid)){
-        obtenerProductoId(pid)
-        .then(producto => res.json(producto))
-        .catch(error => res.send(error.message))
-    }
-    else res.send("ERROR: pid is not a number")
-})
-
-router.post('/', uploader.single('file'), (req, res) => {
-    agregar(req.body.code, req.body.title, req.body.description, req.body.price, (req.file ? [req.file.path] : []), req.body.stock, req.body.category)
-    .then(() => {
-        res.send("Producto agregado con exito...");
-    })
-    .catch(error => res.send(error.message))
-})
-
-router.put('/:pid', (req, res) => {
-    actualizar(req.params.pid, req.body.obj, req.body.campo, req.body.valor)
-    .then(() => res.send("Producto actualizado con exito..."))
-    .catch(error => res.send(error.message))
-})
-
-router.delete('/:pid', (req, res) => {
-    eliminar(req.params.pid)
-    .then(() => {
-        res.send("Producto eliminado con exito...");
-    })
-    .catch(error => res.send(error.message))
-})
-
-
-const obtenerProductos = async limit => {
-        let productos = await productMngr.getProducts();
-        const productosFiltrados = new Array();
-
-        if(limit){
-            for (let index = 0; index < limit; index++) {
-                productos[index] && productosFiltrados.push(productos[index]);
-            }
-            productos = productosFiltrados;
+router.get('/', async (req, res) => {
+    try {
+        const limit = parseInt(req.query.limit);
+        let products = await productMngr.getProducts();
+        if(!isNaN(limit) && limit > 0){
+            products = products.slice(0, limit);
+            res.status(200).json(products);
         }
-        
-        return productos;
-}
+        else res.status(200).json(products);
 
-const obtenerProductoId = async pid => {
-    const producto = await productMngr.getProductById(pid);
-    return producto;
-}
+    } catch (error) {
+        res.status(500).json({ error: 'Error al obtener los productos' });   
+    }
+})
 
-const agregar = async (code, title, description, price, thumbnail, stock, category) => {
-    await productMngr.addProduct(code, title, description, price, thumbnail, stock, category);
-}
+router.get('/:pid', async (req, res) => {
+    try {
+        const pid = parseInt(req.params.pid);
+        const producto = await productMngr.getProductById(pid);
+        res.json(producto);    
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+})
 
-const actualizar = async (pid, obj, campo, valor) => {
-    await productMngr.updateProduct(pid, obj, campo, valor);
-}
+router.post('/', uploader.single('file'), async (req, res) => {
+    try {
+        await productMngr.addProduct(req.body.code, req.body.title, req.body.description, req.body.price, (req.file ? [req.file.filename] : []), req.body.stock, req.body.category);
+        res.send("Producto agregado con exito...");
+    } catch (error) {
+        res.status.send(error.message);
+    }
+})
 
-const eliminar = async (pid) => {
-    await productMngr.deleteProduct(pid);
-}
+router.put('/:pid', async (req, res) => {
+    try {
+        await productMngr.updateProduct( parseInt(req.params.pid), req.body.obj, req.body.campo, req.body.valor);
+        res.send("Producto actualizado con exito...");
+    } catch (error) {
+        res.status(500).send("Error: " + error.message);
+    }
+})
+
+router.delete('/:pid', async (req, res) => {
+    try {
+        await productMngr.deleteProduct(parseInt(req.params.pid));
+        res.send("Producto eliminado con exito...");
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+})
 
 module.exports = router;

@@ -1,14 +1,5 @@
 [
    {
-      "id": 5,
-      "title": "Pizza mozzarella",
-      "description": "Masa madre, salsa de tomate natural, mozzarella italiana",
-      "price": 7000,
-      "thumbnail": "urlImage",
-      "code": "P.moz",
-      "stock": 10
-   },
-   {
       "id": 8,
       "title": "Empanada jyq",
       "description": "masa casera, jamon, muzza",
@@ -37,13 +28,57 @@
       "status": true
    },
    {
-      "id": 15,
+      "id": 16,
+      "title": "Empanada caprese",
+      "description": "masa madre, tomate, albahaca, muzza, ",
+      "price": "700",
+      "thumbnail": [],
+      "code": "b123it",
+      "stock": "10",
+      "status": true
+   },
+   {
+      "id": 18,
+      "title": "pizza muzza",
+      "description": "masa madre, albahaca, muzza, oregano",
+      "price": "700",
+      "thumbnail": [],
+      "code": "234g",
+      "stock": "10",
+      "status": true
+   },
+   {
+      "id": 19,
       "title": "empanada carne",
       "description": "masa casera, cebolla, muzza",
       "price": "900",
       "thumbnail": [],
       "code": "emp123",
       "stock": "20",
+      "status": true
+   },
+   {
+      "id": 20,
+      "title": "pizza muzza",
+      "description": "masa madre, albahaca, muzza, oregano",
+      "price": "700",
+      "thumbnail": [
+         "black-hole.jpg"
+      ],
+      "code": "234g",
+      "stock": "10",
+      "status": true
+   },
+   {
+      "id": 21,
+      "title": "pizza muzza test",
+      "description": "masa madre, albahaca, muzza, oregano",
+      "price": "700",
+      "thumbnail": [
+         "black-hole.jpg"
+      ],
+      "code": "234g",
+      "stock": "10",
       "status": true
    }
 ]
