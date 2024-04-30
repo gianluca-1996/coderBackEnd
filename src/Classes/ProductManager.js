@@ -55,7 +55,8 @@ class ProductManager {
     else throw new Error("Producto no encontrado");
   }
 
-  async updateProduct(id, obj, campo, valor) {
+  async updateProduct(id, obj = null, campo, valor) {
+    let objetoNuevo;
     const productos = await this.getProducts();
     const itemPosition = await productos.findIndex(
       (product) => product.id === id
@@ -64,8 +65,6 @@ class ProductManager {
     if (itemPosition === -1) {
       throw new Error("No se encontro el producto para actualizar");
     }
-
-    let objetoNuevo;
 
     switch (campo) {
       case "title":

@@ -47,7 +47,7 @@ router.post('/', uploader.single('file'), async (req, res) => {
         await productMngr.addProduct(req.body.code, req.body.title, req.body.description, req.body.price, (req.file ? [req.file.filename] : []), req.body.stock, req.body.category);
         res.send("Producto agregado con exito...");
     } catch (error) {
-        res.status.send(error.message);
+        res.status(500).send(error.message);
     }
 })
 
